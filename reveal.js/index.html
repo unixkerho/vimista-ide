@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>reveal.js</title>
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/moon.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown>
+                    # Vimistä IDE?
+                    UNIX-kerho 02.05.2019 (UNIXTIME 1556820000)
+
+                    https://github.com/unixkerho/vimista-ide
+
+                    Maks Turtiainen
+                </section>
+                <section data-markdown>
+                    ## Vi / Vim
+                    - Komentorivipohjainen tekstieditori jonka historia ulottuu 60-luvulle saakka
+                    - Suunniteltu niin ettei käyttäjän tarvitsisi siirtää käsiään ns. kotiriviltä (home row)
+                    - Käyttö perustuu erilaisiin moodeihin (Normal, Insert..)
+                    - "Vim-keys": HJKL (osoittimen liikuttaminen)
+                    - Näppäimistökeskeinen, kevyt, tehokas, erittäin konfiguroitavissa ja laajennettavissa, pitkä "learning curve"
+                    - Kuten tämän Stackoverflow-vastauksen suosio osoittaa, pidetään vaikeana: https://stackoverflow.com/questions/11828270/how-to-exit-the-vim-editor
+                    - Erittäin monet alustat tuettuja (myös Windows)
+                </section>
+                <section data-markdown>
+                    ## Historiaa
+                    - 1969 Ken Thompson kirjoitti ed (EDitor)-rivieditorin osaksi ensimmäistä UNIXia
+                    - 1976 Bill Joy paranteli ediä ja tästä tuli ex (EXtended) ja teki tälle "visuaalisen moodin" nimeltään Vi (VIsual). Julkaistiin osana BSD UNIXia v. 1978
+                    - BSD UNIX 2.0:ssa (1979) Vi oli omana ohjelmana
+                    - 1991 Bram Moolenaar kirjoitti Vi-kloonin Amigalleen nimeltään Vim (Vi IMitation -> Vi IMproved)
+                    - Tehtiin monia parannuksia ja portattiin monille arkkitehtuureille, mukaanlukien x86
+                    - Edelleen kehitetään
+                    - Tulevaisuus: neovim? oni?
+                </section>
+                <section data-markdown>
+                    ## Vim ja UNIX
+                    - Miten tämä liittyy UNIXiin?
+                    - POSIX-standardi määrittelee ed:n ja vi:n
+                    - Käytännössä jokaisen UNIX-tyyppisen jakelun mukana tulee vi tai vim
+                    - Itse asiassa POSIXin mukaan käyttöjärjestelmä ei ole UNIX-tyyppinen, jos siinä ei ole ediä/vi(m)iä
+                </section>
+                <section data-markdown>
+                    ## Vimin suosio
+                    - Linux journalin lukijoiden suosituin tekstieditori (2006)
+                    - Stackoverflow:n 2015 käyttäjätutkimuksen mukaan toisiksi suosituin kehittäjien tekstieditori
+                    - Samaisen tutkimuksen 2019 instanssin mukaan neljänneksi suosituin kehitysympäristö
+                </section>
+                <section data-markdown>
+                    ## Pyhät editorisodat
+                    - 80-90 luvuilla Vi:n haastoi GNU-projektin Emacs-tekstieditori
+                    - Tekstieditorin valinta on joillekkin vakava asia
+                    - Niinpä (huumorimielessä) perustettiin Chruch of Emacs ja Cult of Vi
+                </section>
+                <section data-markdown>
+                    ## Vim-variantit
+                    - gVim: Graafinen versio
+                    - MacVim: Graafinen versio Mac OS:lle
+                    - NeoVim: 2015 julkaistu forkki Vimistä. Modernisoitu versio Vimistä. Käytän itse ja käytämme esimerkeissä
+                    - Oni: NeoVimin pohjalta rakennettu moderni IDE (melko aikaisessa vaiheessa kehitystä)
+                </section>
+                <section data-markdown>
+                    ## Miksi käytän (Neo)Vimiä?
+                    - Koska se on kivaa. En usko että Vimin käyttö tekee ketään paremmaksi kehittäjäksi, mutta se tekee kehittämisestä hauskaa
+                    - Konfiguroitavuus, tekstieditorini toimii juuri niinkuin haluan (yleensä)
+                    - Laajennettavuus, Vimin toiminnallisuutta voi laajentaa Vim scriptillä tai monella muulla ohjelmointikielellä ja valmiita plugineita löytyy mitä erikoisempiin tarkoituksiin
+                    - Standardointi, voin kirjautua mille tahansa UNIX-koneelle ja sieltä löytyy kotoisa editorini
+                    - Komentorivipohjaisuus, sopii komentorivipohjaiseen workflowiini ja lisäksi voin miltä tahansa tietokoneelta miltä löytyy SSH-clientti käyttää Vimiä itselle konfiguroituna
+                    - Nopeus, ei tee edes tiukkaa tehdä koko tiedoston search-replace operaatioita 100 000 rivisille tiedostoille, kehitysympäristöni aukeaa alle sekunnissa (vrt. Atom)
+                </section>
+                <section data-markdown>
+                    ## Vim script
+                    - Vimin mukana tulee täysi ohjelmointikieli Vim script
+                    ```
+                    map <F5> :call CompileAndRun<CR>
+                    func! CompileAndRun()
+                       exec"w"
+                       if &filetype == 'c'
+                          exec "!gcc % -o %<"
+                          exec "!time ./%<"
+                       elseif &filetype == 'sh'
+                          exec "!time bash %"
+                       elseif &filetype == 'python'
+                          exec "!time python %"
+                       elseif &filetype == 'html'
+                          exec "!$BROWSER % &"
+                       elseif &filetype == 'go'
+                          exec "!go build %<"
+                          exec "!time go run %"
+                       elseif &filetype == 'markdown'
+                          exec "!$BROWSER http://localhost:6419/ & grip %"
+                       elseif &filetype == 'tex'
+                          exec "!pdflatex -shell-escape % && biber %< && pdflatex -shell-escape %"
+                          exec "!zathura %<.pdf &"
+                       endif
+                    endfunc
+                    ```
+                    - Laajennettavuus mahdollista myös Pythonilla, Perlillä, Lualla ja Rubyllä
+                </section>
+                <section data-markdown>
+                    ## .vimrc / init.vim
+                    - Vimin konfiguraatiotiedosto on `~/.vim/vimrc` tai `~/.vimrc` ja NeoVimin `~/$XDG_CONFIG_HOME/nvim/init.vim` eli yleensä `~/.config/nvim/init.vim`
+                    - Tapahtuu Vim scriptin syntaksilla
+                    ```
+                    vmap <C-c> y
+                    ```
+                    - Tätä tiedostoa muokkaamalla teemme Vimistä IDEn
+                    - Esimerkki omastani: https://github.com/mjturt/dotfiles/blob/master/.config/nvim/init.vim
+                </section>
+                <section data-markdown>
+                    ## IDE-pluginit
+                    - Code completion: [deoplete](https://github.com/Shougo/deoplete.nvim)
+                    - Snippetit: [neosnippet](https://github.com/Shougo/neosnippet)
+                    - Lintteri: [neomake](https://github.com/neomake/neomake) tai [syntastic](https://github.com/vim-syntastic/syntastic)
+                    - Automaattinen koodin formatointi: [neoformat](https://github.com/sbdchd/neoformat)
+                    - IDEmäinen tiedostoselain: [NERDTree](https://github.com/scrooloose/nerdtree)
+                    - Statuspaneeli: [Airline](https://github.com/vim-airline/vim-airline)
+                    - GIT-integraatio: [gina](https://github.com/lambdalisue/gina.vim) ja [vim-gitgutter](https://github.com/airblade/vim-gitgutter)
+                    - Hexa-värien visualisointi (kiva esim CSS-kehityksessä): [colorizer](https://github.com/lilydjwg/colorizer)
+                    - Kielispesifit pluginit esim. [vim-node](https://github.com/moll/vim-node)
+                    - Tämä oli vasta pintaraapaisu, itse pyrin välttämään ylimääräisten pluginien käyttöä, mutta silti ~50 asennettuna
+
+                </section>
+                <section data-markdown>
+                    ## Aloitetaan
+                    - Asenna neovim
+                    - Asenna pluginmanageri Vim-plug
+                    - `nvim ~/.config/nvim/init.vim`
+                </section>
+                <section data-markdown>
+                    # Kiitos
+                </section>
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ],
+                width: "120%",
+                height: "120%"
+            });
+        </script>
+    </body>
+</html>
