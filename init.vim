@@ -51,9 +51,26 @@ map <S-l> :bnext<CR>
 " Mäpätään leader-key
 let mapleader="\<Space>"
 
+" Avaa grepperi
+noremap <leader>gr :FlyGrep<cr>
+
+" Avaa tiedostoselain
+nnoremap <leader>r :NERDTreeToggle<cr>
+
 " Korjaa sisennys koko tiedostossa
 noremap <Leader>gg gg=G
 
+" Avaa neovimin konfiguraatiotiedosto nopeasti
+nnoremap <leader>ev :tabnew ~/.config/nvim/init.vim<CR>
+
+" Avaa tagbari
+nnoremap <leader>T :Tagbar<cr><cr>
+
+" Formattaa tiedosto
+nmap <leader>LL :Neoformat<CR>
+
+" Ajetaan koodi (funktio määritellään tiedoston lopussa)
+map <leader>R :call CompileAndRun()<CR>
 
 " Pluginit -------------------------------------
 
@@ -94,7 +111,7 @@ Plug 'wsdjeg/FlyGrep.vim'
 " Osoitin samassa paikassa kun sulkiessa vimin
 Plug 'farmergreg/vim-lastplace'
 
-" Näytä hakutulosten määrä
+" Googlen Vim plugari :D (näyttää hakutulosten määrän)
 Plug 'google/vim-searchindex'
 
 " Visualisoi hexavärit
@@ -149,3 +166,35 @@ let g:airline#extensions#tabline#enabled = 1
 set wildignore+=vendor/*,docs/*,node_modules/*,components/*,build/*,dist/*,ttags
 let g:ctrlp_map = '<leader><Tab>'
 let g:ctrlp_cmd = 'CtrlP'
+
+
+" Funktioiden määrittely ------------------------------------
+
+" Tunnista tiedostotyyppi ja aja sen mukainen kääntäjä/tulkki
+func! CompileAndRun()
+   exec"w"
+   if &filetype == 'c'
+      exec "!gcc % -o %<"
+      exec "!time ./%<"
+   elseif &filetype == 'cpp'
+      exec "!g++ % -o %<"
+      exec "!time ./%<"
+   elseif &filetype == 'java'
+      exec "!javac %"
+      exec "!time java -cp %:p:h %:t:r"
+   elseif &filetype == 'sh'
+      exec "!time bash %"
+   elseif &filetype == 'python'
+      exec "!time python %"
+   elseif &filetype == 'html'
+      exec "!$BROWSER % &"
+   elseif &filetype == 'go'
+      exec "!go build %<"
+      exec "!time go run %"
+   elseif &filetype == 'markdown'
+      exec "!$BROWSER http://localhost:6419/ & grip %"
+   elseif &filetype == 'tex'
+      exec "!pdflatex -shell-escape % && biber %< && pdflatex -shell-escape %"
+      exec "!zathura %<.pdf &"
+   endif
+endfunc

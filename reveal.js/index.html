@@ -141,6 +141,35 @@
 
                 </section>
                 <section data-markdown>
+                    ## Vaikutteita vimistä
+                    - Vimin omanlaatuinen "UI-paradigma" on innoittanut monia ohjelmistokehittäjiä
+                    - Moni limittävä ikkunamanageri (tiling windowmanager) käyttää vim-keybindejä esim. DWM, i3, bspwm
+                    - Qutebrowser selain ja pluginit Firefoxille (vimfx) ja Chromiumille (vimium)
+                    - Komentorivipohjainen Ranger-tiedostoselain
+                    - Less tekstinlukuohjelma
+                    - Feh kuvankatseluohjelma
+                    - Zathura PDF-katseluohjelma
+                    - Komentorivipohjainen musiikkisoitin Cmus
+                    - ja monia muita..
+                </section>
+                <section data-markdown>
+                    ## Vimin käytön perusteet
+                    - NeoVim löytyy komennolla nvim
+                    - Vim käynnistyy Normal-moodissa. Tässä moodissa voit liikuttaa osoitinta HJKL-näppäimillä ja tehdä muita komentoja
+                    - Voit syöttää tekstiä Insert modessa. Pääset siihen painamalla esimerkiksi `i`-näppäintä. Pois siitä pääset Escillä
+                    - Voit valita tekstiä erillaisissa Visual-moodeissa. Tavalliseen Visual-moodiin pääset `v`-näppäimellä Normal-moodista. Voit kopioida valitun tekstin y:llä.
+                    - HJKL-näppäimet on tarkoitettu tarkkaan liikkumiseen. Voit liikkua myös muilla ns. vim-motioneilla. Esim. sana kerrallaan (`w`,`b`,`e`). `$`:llä rivin loppuun, alkuun `0`:lla. Puoli näytön korkeutta alaspäin `Control-d`:llä ja ylöspäin `Control-u`:lla
+                </section>
+                <section data-markdown>
+                    ## Vimin käytön perusteet
+                    - Normal-moodissa voit poistaa tekstiä merkin kerrallaan `x`:llä, ja jonkun vim-motionin `d`:llä. Esimerkiksi `dw` poistaa seuraavan sanan.
+                    - Normal-moodissa pääset Command-moodiin `:`-merkillä. `:w` tallentaa tiedoston ja `:q` poistuu editorista. Voit yhdistää nämä myös `:wq`
+                    - Voit etsiä tiedoston läpi kirjoittamalla `/etsittävä-asia` Normal-moodissa
+                    - Kaikki vim-motionit ottavat myös lukuja parametriksi. Esimerkiksi `8k` menee 8 riviä ylöspäin tai `d10w` poistaa kymmenen sanaa
+                    - Macroja voi nauhoittaa `q`:lla normal-moodissa. Esim. `qd` alkaa tallentaa makroa `d`. Kun makro on valmis `q` lopettaa tallentamisen. Suorittaa voi `@d`:llä.
+                    - Vimin mukana tulee ohjelma `vimtutor`. Se on aika paljon kattavampi.
+                </section>
+                <section data-markdown>
                     ## Aloitetaan
                     - Asenna neovim
                     - Asenna pluginmanageri Vim-plug
