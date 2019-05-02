@@ -1,78 +1,7 @@
 " ~/.config/nvim/init.vim
 " Author: Maks Turtiainen (https://github.com/mjturt/)
 
-" Asetuksia -----------------------------------
-
-" Asetetaan väriteema
-color gruvbox
-
-" Hiirituki
-set mouse=a
-
-" Integroidaan vimin oma leikepöytä systeemin leikepöydän kanssas
-set clipboard=unnamedplus
-
-" Syntax hilighting päälle
-syntax on
-filetype plugin indent on
-
-" Mene hakutulkseen sitä mukaan kun haetaan
-set showmatch
-
-" Highlightaa haun tulokset
-set hlsearch
-
-" Älykäs case-sensitivity
-set ignorecase
-set smartcase
-
-" Sisennysasetuksia
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-set smarttab
-set autoindent
-set smartindent
-
-" Näppäinasetuksia ----------------------------
-
-" Kopiointi Control-C:llä
-vmap <C-c> y
-
-" Triggeröi snippettiplugini
-imap <C-o> <Plug>(neosnippet_expand_or_jump)
-smap <C-o> <Plug>(neosnippet_expand_or_jump)
-xmap <C-o> <Plug>(neosnippet_expand_target)
-
-" Liiku bufferien välillä
-map <S-h> :bprevious<CR>
-map <S-l> :bnext<CR>
-
-" Mäpätään leader-key
-let mapleader="\<Space>"
-
-" Avaa grepperi
-noremap <leader>gr :FlyGrep<cr>
-
-" Avaa tiedostoselain
-nnoremap <leader>r :NERDTreeToggle<cr>
-
-" Korjaa sisennys koko tiedostossa
-noremap <Leader>gg gg=G
-
-" Avaa neovimin konfiguraatiotiedosto nopeasti
-nnoremap <leader>ev :tabnew ~/.config/nvim/init.vim<CR>
-
-" Avaa tagbari
-nnoremap <leader>T :Tagbar<cr><cr>
-
-" Formattaa tiedosto
-nmap <leader>LL :Neoformat<CR>
-
-" Ajetaan koodi (funktio määritellään tiedoston lopussa)
-map <leader>R :call CompileAndRun()<CR>
-
-" Pluginit -------------------------------------
+" Pluginit eka -------------------------------------
 
 call plug#begin('~/.config/nvim/plugins')
 
@@ -150,6 +79,77 @@ Plug 'epilande/vim-react-snippets'
 Plug 'alvan/vim-closetag'
 
 call plug#end()
+
+" Asetuksia -----------------------------------
+
+" Asetetaan väriteema
+color gruvbox
+
+" Hiirituki
+set mouse=a
+
+" Integroidaan vimin oma leikepöytä systeemin leikepöydän kanssas
+set clipboard=unnamedplus
+
+" Syntax hilighting päälle
+syntax on
+filetype plugin indent on
+
+" Mene hakutulkseen sitä mukaan kun haetaan
+set showmatch
+
+" Highlightaa haun tulokset
+set hlsearch
+
+" Älykäs case-sensitivity
+set ignorecase
+set smartcase
+
+" Sisennysasetuksia
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+set smarttab
+set autoindent
+set smartindent
+
+" Näppäinasetuksia ----------------------------
+
+" Kopiointi Control-C:llä
+vmap <C-c> y
+
+" Triggeröi snippettiplugini
+imap <C-o> <Plug>(neosnippet_expand_or_jump)
+smap <C-o> <Plug>(neosnippet_expand_or_jump)
+xmap <C-o> <Plug>(neosnippet_expand_target)
+
+" Liiku bufferien välillä
+map <S-h> :bprevious<CR>
+map <S-l> :bnext<CR>
+
+" Mäpätään leader-key
+let mapleader="\<Space>"
+
+" Avaa grepperi
+noremap <leader>gr :FlyGrep<cr>
+
+" Avaa tiedostoselain
+nnoremap <leader>r :NERDTreeToggle<cr>
+
+" Korjaa sisennys koko tiedostossa
+noremap <Leader>gg gg=G
+
+" Avaa neovimin konfiguraatiotiedosto nopeasti
+nnoremap <leader>ev :tabnew ~/.config/nvim/init.vim<CR>
+
+" Avaa tagbari
+nnoremap <leader>T :Tagbar<cr><cr>
+
+" Formattaa tiedosto
+nmap <leader>LL :Neoformat<CR>
+
+" Ajetaan koodi (funktio määritellään tiedoston lopussa)
+map <leader>R :call CompileAndRun()<CR>
 
 " Pluginien asetuksia --------------------------------------
 
